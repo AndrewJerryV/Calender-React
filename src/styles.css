@@ -39,10 +39,6 @@ body {
 }
 
 .theme-toggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 999;
   border: 1px solid rgba(130, 154, 173, 0.36);
   width: 42px;
   height: 42px;
@@ -102,12 +98,10 @@ body {
     height: auto;
     min-height: 100vh;
     align-items: flex-start;
-    padding: 52px 8px 8px;
+    padding: 8px;
   }
 
   .theme-toggle {
-    top: 10px;
-    right: 10px;
     width: 38px;
     height: 38px;
   }
