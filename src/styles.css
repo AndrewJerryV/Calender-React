@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light;
+  --ink-900: #10293f;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink-900: #d5e5f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--ink-900);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -5%, #ffffff 0%, #edf3f8 55%, transparent 70%),
+    linear-gradient(140deg, #d9e1e8 0%, #cfdbe6 42%, #dbe5eb 100%);
+}
+
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(1200px 600px at 8% -10%, #1f2f40 0%, #132333 48%, transparent 72%),
+    linear-gradient(140deg, #0f1924 0%, #0d1b27 42%, #122230 100%);
+}
+
+.app-shell {
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.theme-toggle {
+  border: 1px solid rgba(130, 154, 173, 0.36);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  padding: 0;
+  color: #153046;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 16px 30px -24px rgba(11, 30, 45, 0.74);
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+  display: grid;
+  place-items: center;
+}
+
+.theme-toggle-icon {
+  width: 19px;
+  height: 19px;
+  display: inline-flex;
+}
+
+.theme-toggle-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+:root[data-theme="dark"] .theme-toggle {
+  color: #d9e8f8;
+  border-color: rgba(137, 170, 196, 0.3);
+  background: rgba(16, 33, 47, 0.82);
+  box-shadow: 0 16px 30px -24px rgba(0, 0, 0, 0.8);
+}
+
+:root[data-theme="dark"] .theme-toggle:hover {
+  background: rgba(23, 44, 62, 0.94);
+}
+
+@media (max-width: 980px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding: 8px;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
+  }
+}
