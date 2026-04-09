@@ -357,6 +357,9 @@ export function InteractiveWallCalendar({ themeToggle }: InteractiveWallCalendar
   const [monthNotes, setMonthNotes] = useState<Record<string, string>>(() => loadRecord(STORAGE_MONTH_NOTES));
   const [rangeNotes, setRangeNotes] = useState<Record<string, string>>(() => loadRecord(STORAGE_RANGE_NOTES));
   const heroFadeTimerRef = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
 
   const monthKey = toMonthKey(currentMonth);
   const theme = getThemeForMonth(currentMonth);
@@ -533,6 +536,33 @@ export function InteractiveWallCalendar({ themeToggle }: InteractiveWallCalendar
     return () => { obs.disconnect(); window.removeEventListener("resize", compute); };
   }, []);
 
+  function handleTouchStart(e: React.TouchEvent) {
+    if (!isMobileView) return;
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (!isMobileView || touchStartX.current === null || touchStartY.current === null) return;
+
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    // Reset refs
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    // Only trigger if it's primarily a horizontal swipe
+    if (Math.abs(deltaX) > 60 && Math.abs(deltaY) < 40) {
+      if (deltaX > 0) {
+        handleMonthShift(-1); // Swipe Right -> Previous Month
+      } else {
+        handleMonthShift(1); // Swipe Left -> Next Month
+      }
+    }
+  }
+
+
   function handleMonthShift(amount: number) {
     if (isAnimatingTurn) return;
     const direction: TurnDirection = amount > 0 ? "next" : "prev";
@@ -671,6 +701,8 @@ export function InteractiveWallCalendar({ themeToggle }: InteractiveWallCalendar
           <article
             ref={fitTargetRef}
             className={`calendar-sheet ${flipDirection ? `is-flipping-${flipDirection}` : ""}`}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {canUseTurnJs && turnPages ? (
               <div
